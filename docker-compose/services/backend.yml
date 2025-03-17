@@ -2,7 +2,7 @@ version: '3.9'
 
 services:
   backend:
-    image: pego-explorer-backend:latest
+    image: blockscout/${DOCKER_REPO:-blockscout}:${DOCKER_TAG:-latest}
     restart: always
     stop_grace_period: 5m
     container_name: 'backend'

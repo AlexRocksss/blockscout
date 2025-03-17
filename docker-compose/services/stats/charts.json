@@ -1,6 +1,6 @@
 {
     "template_values": {
-        "native_coin_symbol": "PG",
+        "native_coin_symbol": "ENI",
         "active_recurring_accounts_title": "Active recurring accounts",
         "active_recurring_accounts_description": "Accounts active this period and within a prior"
     },
