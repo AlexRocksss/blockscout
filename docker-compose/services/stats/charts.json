@@ -1,6 +1,6 @@
 {
     "template_values": {
-        "native_coin_symbol": "PDA"
+        "native_coin_symbol": "ZEUS"
     },
     "counters": {
         "total_blocks": {
