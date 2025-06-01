@@ -1,6 +1,6 @@
 {
     "template_values": {
-        "native_coin_symbol": "ENI"
+        "native_coin_symbol": "EGAS"
     },
     "counters": {
         "total_blocks": {
