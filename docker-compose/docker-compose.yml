@@ -5,6 +5,11 @@ services:
     extends:
       file: ./services/redis.yml
       service: redis-db
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "500m"
+        max-file: "2"
 
   db-init:
     extends:
@@ -18,6 +23,11 @@ services:
     extends:
       file: ./services/db.yml
       service: db
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "500m"
+        max-file: "2"
 
   backend:
     depends_on:
@@ -30,36 +40,39 @@ services:
       context: ..
       dockerfile: ./docker/Dockerfile
       args:
-        RELEASE_VERSION: 9.0.2
+        RELEASE_VERSION: 10.1.0
     links:
       - db:database
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "500m"
+        max-file: "2"
     environment:
         ETHEREUM_JSONRPC_HTTP_URL: http://host.docker.internal:8545/
         ETHEREUM_JSONRPC_TRACE_URL: http://host.docker.internal:8545/
         ETHEREUM_JSONRPC_WS_URL: ws://host.docker.internal:8545/
-        CHAIN_ID: '1337'
-
-  nft_media_handler:
-    depends_on:
-      - backend
-    extends:
-      file: ./services/nft_media_handler.yml
-      service: nft_media_handler
-    build:
-      context: ..
-      dockerfile: ./docker/Dockerfile
-      args:
-        RELEASE_VERSION: 9.0.2
+        CHAIN_ID: '173'
 
   visualizer:
     extends:
       file: ./services/visualizer.yml
       service: visualizer
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "500m"
+        max-file: "2"
 
   sig-provider:
     extends:
       file: ./services/sig-provider.yml
       service: sig-provider
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "500m"
+        max-file: "2"
 
   frontend:
     depends_on:
@@ -67,6 +80,11 @@ services:
     extends:
       file: ./services/frontend.yml
       service: frontend
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "500m"
+        max-file: "2"
 
   stats-db-init:
     extends:
@@ -80,6 +98,11 @@ services:
     extends:
       file: ./services/stats.yml
       service: stats-db
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "500m"
+        max-file: "2"
 
   stats:
     depends_on:
@@ -88,6 +111,11 @@ services:
     extends:
       file: ./services/stats.yml
       service: stats
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "500m"
+        max-file: "2"
 
   user-ops-indexer:
     depends_on:
@@ -96,6 +124,11 @@ services:
     extends:
       file: ./services/user-ops-indexer.yml
       service: user-ops-indexer
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "500m"
+        max-file: "2"
 
   proxy:
     depends_on:
@@ -105,3 +138,8 @@ services:
     extends:
       file: ./services/nginx.yml
       service: proxy
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "500m"
+        max-file: "2"
