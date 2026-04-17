@@ -64,15 +64,16 @@ services:
         max-size: "500m"
         max-file: "2"
 
-  sig-provider:
-    extends:
-      file: ./services/sig-provider.yml
-      service: sig-provider
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "500m"
-        max-file: "2"
+  # Disabled sig-provider service as looking up for function/event signatures might cause timeout on logs and internal transaction tab/page.
+  #sig-provider:
+  #  extends:
+  #    file: ./services/sig-provider.yml
+  #    service: sig-provider
+  #  logging:
+  #    driver: "json-file"
+  #    options:
+  #      max-size: "500m"
+  #      max-file: "2"
 
   frontend:
     depends_on:
