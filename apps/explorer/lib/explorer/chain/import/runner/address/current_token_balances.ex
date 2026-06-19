@@ -379,7 +379,7 @@ defmodule Explorer.Chain.Import.Runner.Address.CurrentTokenBalances do
       update: [
         set: [
           block_number: fragment("EXCLUDED.block_number"),
-          value: fragment("EXCLUDED.value"),
+          value: fragment("COALESCE(EXCLUDED.value, ?)", current_token_balance.value),
           value_fetched_at: fragment("EXCLUDED.value_fetched_at"),
           old_value: current_token_balance.value,
           token_type: fragment("EXCLUDED.token_type"),
@@ -390,12 +390,12 @@ defmodule Explorer.Chain.Import.Runner.Address.CurrentTokenBalances do
         ]
       ],
       where:
-        fragment("EXCLUDED.value_fetched_at IS NOT NULL") and
-          (fragment("? < EXCLUDED.block_number", current_token_balance.block_number) or
-             (fragment("? = EXCLUDED.block_number", current_token_balance.block_number) and
-                fragment("EXCLUDED.value IS NOT NULL") and
-                (is_nil(current_token_balance.value_fetched_at) or
-                   fragment("? < EXCLUDED.value_fetched_at", current_token_balance.value_fetched_at))))
+        fragment("? < EXCLUDED.block_number", current_token_balance.block_number) or
+          (fragment("? = EXCLUDED.block_number", current_token_balance.block_number) and
+             fragment("EXCLUDED.value_fetched_at IS NOT NULL") and
+             fragment("EXCLUDED.value IS NOT NULL") and
+             (is_nil(current_token_balance.value_fetched_at) or
+                fragment("? < EXCLUDED.value_fetched_at", current_token_balance.value_fetched_at)))
     )
   end
 
