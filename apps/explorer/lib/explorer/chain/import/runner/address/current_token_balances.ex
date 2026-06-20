@@ -297,13 +297,14 @@ defmodule Explorer.Chain.Import.Runner.Address.CurrentTokenBalances do
   # ctb does not exist
   defp should_update?(_new_ctb, nil), do: true
 
-  # new ctb has no value
-  defp should_update?(%{value_fetched_at: nil}, _existing_ctb), do: false
-
-  # new ctb is newer
+  # new ctb is newer block — allow upsert so block_number advances and async fetcher gets dispatched.
+  # The on_conflict WHERE + COALESCE(EXCLUDED.value, current.value) preserves old value when EXCLUDED.value is nil.
   defp should_update?(%{block_number: new_ctb_block_number}, %{block_number: existing_ctb_block_number})
        when new_ctb_block_number > existing_ctb_block_number,
        do: true
+
+  # new ctb has no value at same/older block
+  defp should_update?(%{value_fetched_at: nil}, _existing_ctb), do: false
 
   # new ctb is the same height or older
   defp should_update?(new_ctb, existing_ctb) do
